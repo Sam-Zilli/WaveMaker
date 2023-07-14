@@ -20,7 +20,6 @@ android {
             }
         }
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -33,12 +32,13 @@ android {
     }
     externalNativeBuild {
         cmake {
-            path file('src/main/cpp/CMakeLists.txt')
+            path file('/Users/sam/AndroidStudioProjects/WaveMaker/app/CMakeLists.txt')
             version '3.22.1'
         }
     }
+
     buildFeatures {
-        viewBinding true
+        viewBinding true;
     }
 }
 

@@ -3,34 +3,44 @@ package WaveMaker.GuidedProject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.TextView;
 
-import WaveMaker.GuidedProject.databinding.ActivityMainBinding;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Used to load the 'GuidedProject' library on application startup.
     static {
-        System.loadLibrary("GuidedProject");
+        System.loadLibrary("native-lib");
+        Log.i("MainActivity", "hi");
     }
 
-    private ActivityMainBinding binding;
+    private native void touchEvent(int action);
+
+    private native void startEngine();
+
+    private native void stopEngine();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        // Example of a call to a native method
-        TextView tv = binding.sampleText;
-        tv.setText(stringFromJNI());
+        setContentView(R.layout.activity_main);
+        startEngine();
     }
 
-    /**
-     * A native method that is implemented by the 'GuidedProject' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
+    private void logClick(View v) {
+        Log.i("MainActivity", "loggedClick");
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        touchEvent(event.getAction());
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public void onDestroy() {
+        stopEngine();
+        super.onDestroy();
+    }
 }
